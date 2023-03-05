@@ -4,7 +4,9 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity(name = "orders")
-class Order {
+open class Order {
+
+    protected constructor()
 
     @Id
     @GeneratedValue
@@ -51,19 +53,6 @@ class Order {
 //        delivery.order = this
 //    }
 
-    // 생성 메서드
-    fun createOrder(member: Member, delivery: Delivery, vararg orderItems: OrderItem):Order {
-        val order = Order()
-        order.member = member
-        order.delivery = delivery
-        for (orderItem in orderItems) {
-            order.addOrderItem(orderItem)
-        }
-        order.status = OrderStatus.ORDER
-        order.orderDate = LocalDateTime.now()
-        return order
-    }
-
     // 비즈니스 로직
     /**
      * 주문 취소
@@ -87,5 +76,20 @@ class Order {
             totalPrice += orderItem.getTotalPrice()
         }
         return totalPrice
+    }
+
+    companion object {
+        // 생성 메서드
+        fun createOrder(member: Member, delivery: Delivery, vararg orderItems: OrderItem):Order {
+            val order = Order()
+            order.member = member
+            order.delivery = delivery
+            for (orderItem in orderItems) {
+                order.addOrderItem(orderItem)
+            }
+            order.status = OrderStatus.ORDER
+            order.orderDate = LocalDateTime.now()
+            return order
+        }
     }
 }
