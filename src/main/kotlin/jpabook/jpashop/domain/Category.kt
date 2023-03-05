@@ -1,12 +1,6 @@
 package jpabook.jpashop.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.JoinTable
-import jakarta.persistence.ManyToMany
+import jakarta.persistence.*
 import jpabook.jpashop.domain.item.Item
 
 @Entity
@@ -25,4 +19,16 @@ class Category {
         inverseJoinColumns = [JoinColumn(name = "item_id")]
         )
     var items: MutableList<Item> = mutableListOf()
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    var parent: Category? = null
+
+    @OneToMany(mappedBy = "parent")
+    var child: MutableList<Category> = mutableListOf()
+
+    fun addChildCategory(child: Category) {
+        this.child.add(child)
+        child.parent = this
+    }
 }

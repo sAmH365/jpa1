@@ -5,9 +5,6 @@ import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 
 @Entity
@@ -24,5 +21,5 @@ class Member {
     var address: Address? = null
 
     @OneToMany(mappedBy = "member")
-    var orders: MutableList<Order>? = mutableListOf()
+    val orders: MutableList<Order> = mutableListOf()
 }

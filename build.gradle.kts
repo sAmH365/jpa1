@@ -8,6 +8,15 @@ plugins {
 	kotlin("plugin.jpa") version "1.7.22"
 }
 
+allOpen { // 추가적으로 열어줄 allOpen
+	annotation("jpabook.jpashop.AllOpen")
+}
+
+noArg {
+	annotation("org.springframework.stereotype.Repository")
+	annotation("org.springframework.stereotype.Service")
+}
+
 group = "jpabook"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17

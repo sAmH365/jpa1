@@ -1,11 +1,13 @@
 package jpabook.jpashop.domain.item
 
 import jakarta.persistence.*
+import jpabook.jpashop.AllOpen
 import jpabook.jpashop.domain.Category
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
+@AllOpen
 abstract class Item {
 
     @Id
@@ -18,5 +20,5 @@ abstract class Item {
     var stockQuantity: Int? = null
 
     @ManyToMany(mappedBy = "items")
-    var categories: MutableList<Category> = mutableListOf()
+    val categories: MutableList<Category> = mutableListOf()
 }
