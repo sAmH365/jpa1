@@ -19,6 +19,26 @@ class OrderItem {
     @JoinColumn(name = "order_id")
     var order: Order? = null
 
-    var orderPrice: Int? = null // 주문가격
-    var count: Int? = null // 주문수량
+    var orderPrice: Int = 0 // 주문가격
+    var count: Int = 0 // 주문수량
+
+    // 생성 메서드
+    fun createOrderItem(item: Item, orderPrice: Int, count: Int): OrderItem {
+        val orderItem = OrderItem()
+        orderItem.item = item
+        orderItem.orderPrice = orderPrice
+        orderItem.count = count
+
+        item.removeStock(count)
+        return orderItem
+    }
+
+    // 비즈니스 로직
+    fun cancel() {
+        this.item?.addStock(count)
+    }
+
+    fun getTotalPrice(): Int {
+        return orderPrice * count
+    }
 }
