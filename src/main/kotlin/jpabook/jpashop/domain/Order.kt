@@ -14,6 +14,10 @@ class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     var member: Member? = null
+        set(member) {
+            this.member = member
+            member?.orders?.add(this)
+        }
 
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
     val orderItems: MutableList<OrderItem> = mutableListOf()
@@ -21,25 +25,29 @@ class Order {
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id ")
     var delivery: Delivery? = null
+        set(delivery) {
+            this.delivery = delivery
+            delivery?.order = this
+        }
 
     var orderDate: LocalDateTime? = null
 
     @Enumerated(EnumType.STRING)
     var status: OrderStatus? = null
 
-    // 연관관계 메서드
-    fun setMember(member: Member) {
-        this.member = member
-        member.orders.add(this)
-    }
+//    // 연관관계 메서드
+//    fun setMember(member: Member) {
+//        this.member = member
+//        member.orders.add(this)
+//    }
 
     fun addOrderItem(orderItem: OrderItem) {
         orderItems.add(orderItem)
         orderItem.order = this
     }
 
-    fun setDelivery(delivery: Delivery) {
-        this.delivery = delivery
-        delivery.order = this
-    }
+//    fun setDelivery(delivery: Delivery) {
+//        this.delivery = delivery
+//        delivery.order = this
+//    }
 }
