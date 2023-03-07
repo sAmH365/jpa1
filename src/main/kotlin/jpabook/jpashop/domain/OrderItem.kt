@@ -1,10 +1,12 @@
 package jpabook.jpashop.domain
 
 import jakarta.persistence.*
+import jpabook.jpashop.AllOpen
 import jpabook.jpashop.domain.item.Item
 
 @Entity
-open class OrderItem {
+@AllOpen
+class OrderItem {
 
     protected constructor()
 

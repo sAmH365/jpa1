@@ -1,10 +1,12 @@
 package jpabook.jpashop.domain
 
 import jakarta.persistence.*
+import jpabook.jpashop.AllOpen
 import java.time.LocalDateTime
 
 @Entity(name = "orders")
-open class Order {
+@AllOpen
+class Order {
 
     protected constructor()
 
@@ -15,43 +17,35 @@ open class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    var member: Member? = null
-        set(member) {
-            this.member = member
-            member?.orders?.add(this)
-        }
+    private var member: Member? = null
 
     @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
     val orderItems: MutableList<OrderItem> = mutableListOf()
 
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id ")
-    var delivery: Delivery? = null
-        set(delivery) {
-            this.delivery = delivery
-            delivery?.order = this
-        }
+    private var delivery: Delivery? = null
 
     var orderDate: LocalDateTime? = null
 
     @Enumerated(EnumType.STRING)
     var status: OrderStatus? = null
 
-//    // 연관관계 메서드
-//    fun setMember(member: Member) {
-//        this.member = member
-//        member.orders.add(this)
-//    }
+    // 연관관계 메서드
+    fun setMember(member: Member) {
+        this.member = member
+        member.orders.add(this)
+    }
 
     private fun addOrderItem(orderItem: OrderItem) {
         orderItems.add(orderItem)
         orderItem.order = this
     }
 
-//    fun setDelivery(delivery: Delivery) {
-//        this.delivery = delivery
-//        delivery.order = this
-//    }
+    fun setDelivery(delivery: Delivery) {
+        this.delivery = delivery
+        delivery.order = this
+    }
 
     // 비즈니스 로직
     /**
