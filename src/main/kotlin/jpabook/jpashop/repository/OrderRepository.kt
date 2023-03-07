@@ -19,5 +19,13 @@ class OrderRepository {
         return em.find(Order::class.java, id)
     }
 
-//    fun findAll(orderSearch: OrderSearch): MutableList<Order> {}
+    fun findAll(orderSearch: OrderSearch): MutableList<Order> {
+
+        return em.createQuery("select o from Order o join o.member m where o.status = :status and m.name like :name"
+            , Order::class.java)
+            .setParameter("status", orderSearch.orderStatus)
+            .setParameter("name", orderSearch.memberName)
+            .setMaxResults(1000)
+            .resultList
+    }
 }
